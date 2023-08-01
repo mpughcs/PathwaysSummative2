@@ -36,9 +36,9 @@ public class BookController {
         }
     }
 //    update
-    @PutMapping("/books/{id}")
+    @PutMapping("/books/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateAlbum(@RequestBody Book book, @PathVariable int id){
+    public void updateBook(@RequestBody Book book){
         repo.save(book);
     }
 
@@ -48,10 +48,10 @@ public class BookController {
         repo.deleteById(id);
     }
 //custom query
-@GetMapping("/book/authorId/{id}")
-@ResponseStatus(HttpStatus.OK)
-public List<Book> findByState(@PathVariable int id){
-    return repo.findByAuthorId(id);
-}
+    @GetMapping("/book/authorId/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Book> findByState(@PathVariable int id){
+        return repo.findByAuthorId(id);
+    }
 
 }
