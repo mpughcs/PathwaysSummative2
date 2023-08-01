@@ -18,15 +18,15 @@ public class Book {
     private String isbn;
     private LocalDate publish_date;
 
-//    @ManyToOne(cascade=CascadeType.ALL)
-//    @JoinColumn(name = "author_id")
-    private int authorId;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "author_id")
+    private Author authorId;
 
     private String title;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "publisher_id" )
-    private int publisherId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "publisher_id" )
+    private Publisher publisherId;
 
     private BigDecimal price;
 
@@ -54,11 +54,11 @@ public class Book {
         this.publish_date = publish_date;
     }
 
-    public int getAuthorId() {
+    public Author getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(int authorId) {
+    public void setAuthorId(Author authorId) {
         this.authorId = authorId;
     }
 
@@ -70,11 +70,11 @@ public class Book {
         this.title = title;
     }
 
-    public int getPublisherId() {
+    public Publisher getPublisherId() {
         return publisherId;
     }
 
-    public void setPublisherId(int publisherId) {
+    public void setPublisherId(Publisher publisherId) {
         this.publisherId = publisherId;
     }
 
@@ -91,7 +91,7 @@ public class Book {
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
         Book book = (Book) o;
-        return id == book.id && authorId == book.authorId && publisherId == book.publisherId && Objects.equals(isbn, book.isbn) && Objects.equals(publish_date, book.publish_date) && Objects.equals(title, book.title) && Objects.equals(price, book.price);
+        return Objects.equals(book.authorId, getAuthorId()) && Objects.equals(getPublisherId(), book.getPublisherId()) && Objects.equals(isbn, book.isbn) && Objects.equals(publish_date, book.publish_date) && Objects.equals(title, book.title) && Objects.equals(price, book.price);
     }
 
     @Override
