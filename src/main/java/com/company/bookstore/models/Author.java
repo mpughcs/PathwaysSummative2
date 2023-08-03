@@ -2,10 +2,7 @@ package com.company.bookstore.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -14,12 +11,13 @@ import java.util.Objects;
 public class Author {
 
     @Id
-    @GeneratedValue
+    @Column(name="author_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer author_id;
 
-    private String firstName;
+    private String first_name;
 
-    private String lastName;
+    private String last_name;
 
     private String street;
 
@@ -38,12 +36,12 @@ public class Author {
         return author_id;
     }
 
-    public String getFirstName(){
-        return firstName;
+    public String getFirst_name(){
+        return first_name;
     }
 
     public String getLastName(){
-        return lastName;
+        return last_name;
     }
 
     public String getStreet(){
@@ -76,11 +74,11 @@ public class Author {
     }
 
     public void setFirstName(String firstName){
-        this.firstName = lastName;
+        this.first_name = last_name;
     }
 
     public void setLastName(String lastName){
-        this.lastName = lastName;
+        this.last_name = lastName;
     }
 
     public void setCity(String city){
@@ -113,7 +111,7 @@ public class Author {
         if (!(o instanceof Author)) return false;
         Author author = (Author) o;
         return Objects.equals(getAuthor_id(), author.getAuthor_id()) &&
-                Objects.equals(getFirstName(), author.getFirstName()) &&
+                Objects.equals(getFirst_name(), author.getFirst_name()) &&
                 Objects.equals(getLastName(), author.getLastName()) &&
                 Objects.equals(getCity(), author.getCity()) &&
                 Objects.equals(getEmail(), author.getEmail()) &&
@@ -124,5 +122,5 @@ public class Author {
     }
 
     @Override
-    public int hashCode(){return Objects.hash(getAuthor_id(), getFirstName(), getLastName(), getCity(), getEmail(), getPhone(), getState(), getStreet(), getPostal_code());};
+    public int hashCode(){return Objects.hash(getAuthor_id(), getFirst_name(), getLastName(), getCity(), getEmail(), getPhone(), getState(), getStreet(), getPostal_code());};
 }
