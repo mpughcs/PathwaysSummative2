@@ -28,25 +28,9 @@ public class BookController {
 
         @PostMapping("/books")
         @ResponseStatus(HttpStatus.CREATED)
-        public Book addBook(@RequestBody Book toAdd) {
-            // Fetch the existing Author entity
-            Author existingAuthor = aRepo.findById(toAdd.getAuthorId().getAuthor_id())
-                    .orElseThrow(() -> new IllegalArgumentException("Author not found"));
+        public Book addBook(@RequestBody Book toAdd){return repo.save(toAdd);}
 
-            // Fetch the existing Publisher entity
-            Publisher existingPublisher = pRepo.findById(toAdd.getPublisherId().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Publisher not found"));
-            // Create and save the new Book entity
-            Book newBook = new Book();
-            newBook.setIsbn(toAdd.getIsbn());
-            newBook.setPublish_date(toAdd.getPublish_date());
-            newBook.setTitle(toAdd.getTitle());
-            newBook.setPrice(toAdd.getPrice());
-            newBook.setAuthorId(existingAuthor);
-            newBook.setPublisherId(existingPublisher);
 
-            return repo.save(newBook);
-        }
 
 //    read
     @GetMapping("/books")
