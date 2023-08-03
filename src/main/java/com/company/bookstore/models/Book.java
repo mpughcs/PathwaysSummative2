@@ -18,13 +18,13 @@ public class Book {
     private String isbn;
     private LocalDate publish_date;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "author_id")
     private Author authorId;
 
     private String title;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "publisher_id" )
     private Publisher publisherId;
 
@@ -32,6 +32,19 @@ public class Book {
 
     public int getId() {
         return id;
+    }
+
+    public Book(String isbn, LocalDate publish_date, Author authorId, String title, Publisher publisherId, BigDecimal price) {
+        this.isbn = isbn;
+        this.publish_date = publish_date;
+        this.authorId = authorId;
+        this.title = title;
+        this.publisherId = publisherId;
+        this.price = price;
+    }
+
+    public Book() {
+
     }
 
     public void setId(int id) {

@@ -2,10 +2,7 @@ package com.company.bookstore.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -14,11 +11,13 @@ import java.util.Objects;
 public class Author {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer author_id;
 
+    @Column(name ="first_name")
     private String firstName;
 
+    @Column(name ="last_name")
     private String lastName;
 
     private String street;
@@ -32,6 +31,20 @@ public class Author {
     private String phone;
 
     private String email;
+
+    public Author(String firstName, String lastName, String street, String city, String state, String postal_code, String phone, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.postal_code = postal_code;
+        this.phone = phone;
+        this.email = email;
+    }
+
+    public Author() {
+    }
 
     //Getters
     public Integer getAuthor_id(){
@@ -76,7 +89,7 @@ public class Author {
     }
 
     public void setFirstName(String firstName){
-        this.firstName = lastName;
+        this.firstName = firstName;
     }
 
     public void setLastName(String lastName){

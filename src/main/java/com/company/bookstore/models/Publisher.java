@@ -24,6 +24,18 @@ public class Publisher {
     private String phone;
     private String email;
 
+    public Publisher(String name, String street, String city, String state, String postal_code, String phone, String email) {
+        this.name = name;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.postal_code = postal_code;
+        this.phone = phone;
+        this.email = email;
+    }
+
+    public Publisher() {
+    }
 
     public int getId() {
         return id;
