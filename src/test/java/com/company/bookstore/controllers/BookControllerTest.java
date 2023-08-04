@@ -60,7 +60,6 @@ class BookControllerTest {
         inputJson = mapper.writeValueAsString(b);
         b=repo.save(b);
 
-
     }
 
     @Test
@@ -113,7 +112,7 @@ class BookControllerTest {
     @Test
     void shouldFindByAuthorId() throws Exception{
         repo.save(b);
-        mockMvc.perform(get("/books/authorId/{id}",b.getId()))
+        mockMvc.perform(get("/books/authorId/{id}",b.getAuthorId().getAuthor_id()))
                 .andDo(print())
                 .andExpect(status().isOk());
 
