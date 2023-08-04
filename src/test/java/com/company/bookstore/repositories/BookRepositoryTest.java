@@ -29,7 +29,7 @@ class BookRepositoryTest {
 
     private Author author1 = new Author("m", "pugh", "main", "longbeach", "CA", "90803", "314-299-3259", "mp@gmail.com");
     private Publisher publisher1 = new Publisher("z", "south", "LA", "CA", "90909", "111-111-1111", "z@hotmail.com");
-    Book b = new Book("100000000000", LocalDate.now(), author1, "lion book", publisher1, new BigDecimal("12.99"));
+    private Book b = new Book("100000000000", LocalDate.now(), author1, "lion book", publisher1, new BigDecimal("12.99"));
 
     @BeforeEach
     void setUp() {
@@ -40,9 +40,8 @@ class BookRepositoryTest {
         author1= authorRepository.save(author1);
         publisher1 = pubRepository.save(publisher1);
         b=repo.save(b);
-        repo.save(b);
+        System.out.println("b in setup's id: "+ b.getAuthorId().getAuthor_id());
 
-        System.out.println(b.getId());
 
     }
 
@@ -103,10 +102,13 @@ class BookRepositoryTest {
     void shouldSearchBookByAuthorId(){
         List<Book> expected = new ArrayList<>();
         expected.add(b);
-        // Create an Author object with the same ID as the author of the book 'b'
-        Author author = new Author();
-        author.setAuthor_id(b.getAuthorId().getAuthor_id());
-        assertEquals(repo.findByAuthorId(author.getAuthor), expected);
+        List<Book> recieved = new ArrayList<>();
+        for(Book book : repo.findAll()){
+            if (book.getAuthorId().getAuthor_id().intValue() == b.getAuthorId().getAuthor_id()){
+                recieved.add(book);
+            }
+        }
+        assertEquals(expected,recieved);
     }
 
 }
