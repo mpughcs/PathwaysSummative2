@@ -3,6 +3,9 @@ package com.company.bookstore.repositories;
 import com.company.bookstore.models.Author;
 import com.company.bookstore.models.Book;
 import com.company.bookstore.models.Publisher;
+import org.aspectj.lang.annotation.After;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +36,17 @@ class BookRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        repo.deleteAll();
-        authorRepository.deleteAll();
-        pubRepository.deleteAll();
 
         author1= authorRepository.save(author1);
         publisher1 = pubRepository.save(publisher1);
         b=repo.save(b);
-        System.out.println("b in setup's id: "+ b.getAuthorId().getAuthor_id());
 
-
+    }
+    @AfterEach
+    void cleanUp(){
+        repo.deleteAll();
+        authorRepository.deleteAll();
+        pubRepository.deleteAll();
     }
 
 //    Create
@@ -81,19 +85,14 @@ class BookRepositoryTest {
     @Test
     void shouldDeleteBook(){
 
-//        make sure customer exists
-        Optional<Book> retrievedBook = repo.findById(b.getId());
+        Optional<Book> retrievedBook;
 
-        // Perform the assertion to check if the customer exists before deletion
 
-        // Delete the customer from the database
         repo.delete(b);
 
-        // Try to retrieve the customer after deletion
         retrievedBook = repo.findById(b.getId());
 
-        // Perform the assertion to check if the customer is deleted
-        assertFalse(retrievedBook.isPresent(), "Customer should be deleted");
+        assertFalse(retrievedBook.isPresent(), "Book should be deleted");
 
     }
 
@@ -110,5 +109,8 @@ class BookRepositoryTest {
         }
         assertEquals(expected,recieved);
     }
+
+
+
 
 }

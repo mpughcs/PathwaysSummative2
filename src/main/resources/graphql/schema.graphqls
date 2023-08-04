@@ -19,6 +19,7 @@ type Author {
     postal_code: String!
     phone: String!
     email: String!
+    books:[Book]
 }
 
 type Publisher {
@@ -33,6 +34,7 @@ type Publisher {
 }
 
 type Query{
+
     findBookById(id:ID!): Book
     findAuthorById(id:ID!):Author
     findPublisherById(id:ID!):Publisher
