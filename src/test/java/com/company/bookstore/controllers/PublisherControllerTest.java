@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,16 +26,17 @@ class PublisherControllerTest {
 
     @MockBean
     private PublisherRepository repo;
-
+    Publisher p;
+    String inputJson;
     @BeforeEach
     public void setup() throws Exception{
         repo.deleteAll();
+        p = new Publisher("testPub","main","LA","CA","90802","123","testemail");
+        inputJson = mapper.writeValueAsString(p);
+
     }
     @Test
-    void addPublisher() throws Exception {
-        Publisher p = new Publisher("testPub","main","LA","CA","90802","123","testemail");
-        String inputJson = mapper.writeValueAsString(p);
-
+    void shouldAddPublisher() throws Exception {
         mockMvc.perform(
                         post("/publishers")
                                 .content(inputJson)
@@ -45,18 +46,36 @@ class PublisherControllerTest {
     }
 
     @Test
-    void getPublishers() {
+    void shouldGetPublishers() throws Exception {
+        mockMvc.perform(get("/publishers"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    void getPublisherById() {
+    void shouldGetPublisherById() throws Exception {
+        mockMvc.perform(get("/publishers/{id}",p.getId()))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    void updatePublisher() {
+    void shouldUpdatePublisher() throws Exception {
+        mockMvc.perform(
+                        put("/publishers/", p)
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    void deletePublisher() {
+    void shouldDeletePublisher() throws Exception {
+        repo.save(p);
+        mockMvc.perform(delete("/publishers/{id}", p.getId()))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
     }
 }

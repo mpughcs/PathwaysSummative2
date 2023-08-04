@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,7 +48,7 @@ class BookControllerTest {
     private Author author1 = new Author("m", "pugh", "main", "longbeach", "CA", "90803", "314-299-3259", "mp@gmail.com");
     private Publisher publisher1 = new Publisher("z", "south", "LA", "CA", "90909", "111-111-1111", "z@hotmail.com");
     Book b = new Book("100000000000", LocalDate.now(), author1, "lion book", publisher1, new BigDecimal("12.99"));
-
+    String inputJson;
     @BeforeEach
     public void setup() throws Exception {
         repo.deleteAll();
@@ -57,12 +57,15 @@ class BookControllerTest {
 
         author1 = authorRepository.save(author1);
         publisher1 = pubRepository.save(publisher1);
+        inputJson = mapper.writeValueAsString(b);
+        b=repo.save(b);
+
 
     }
 
     @Test
     void shouldAddBook() throws Exception {
-        String inputJson = mapper.writeValueAsString(b);
+//        inputJson = mapper.writeValueAsString(b);
 
         mockMvc.perform(
                         post("/books")
@@ -73,24 +76,46 @@ class BookControllerTest {
     }
 
 
-//
-//    @Test
-//    void getBooks() {
-//    }
-//
-//    @Test
-//    void getBooksById() {
-//    }
-//
-//    @Test
-//    void updateBook() {
-//    }
-//
-//    @Test
-//    void deleteBook() {
-//    }
-//
-//    @Test
-//    void findByAuthorId() {
-//    }
+
+    @Test
+    void shouldGetBooks() throws Exception {
+        mockMvc.perform(get("/books"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldGetBooksById() throws Exception {
+        mockMvc.perform(get("/books/{id}",b.getId()))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldUpdateBook() throws Exception {
+        mockMvc.perform(
+                        put("/books/", b)
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void shouldDeleteBook() throws Exception {
+        repo.save(b);
+        mockMvc.perform(delete("/books/{id}", b.getId()))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void shouldFindByAuthorId() throws Exception{
+        repo.save(b);
+        mockMvc.perform(get("/books/authorId/{id}",b.getId()))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+    }
 }
