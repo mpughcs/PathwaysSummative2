@@ -6,7 +6,7 @@ type Book {
     authorId:Author!
     title: String!
     publisherId: Publisher!
-    price: Int!
+    price: Int!add
 }
 
 type Author {
@@ -19,7 +19,6 @@ type Author {
     postal_code: String!
     phone: String!
     email: String!
-    books:[Book]
 }
 
 type Publisher {
