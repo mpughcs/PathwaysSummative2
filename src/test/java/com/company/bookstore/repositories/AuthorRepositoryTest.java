@@ -86,6 +86,28 @@ class AuthorRepositoryTest {
     }
 
     @Test
+    public void shouldGetAuthorByID() {
+        //Set up
+        Author author = new Author();
+        author.setFirstName("bob");
+        author.setLastName("miller");
+        author.setState("TX");
+        author.setCity("Austin");
+        author.setStreet("Faro");
+        author.setEmail("bob@gmail.com");
+        author.setPostal_code("78741");
+        author.setPhone("5127707160");
+
+        //Save customer
+        authorRepo.save(author);
+
+        Optional<Author> author1 = authorRepo.findById(author.getAuthor_id());
+
+        //Assert...
+        assertEquals(author1.get(), author);
+    }
+
+    @Test
     public void shouldUpdateAuthor() {
         //Arrange...
         //Set up
