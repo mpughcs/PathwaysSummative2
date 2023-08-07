@@ -3,17 +3,18 @@ package com.company.bookstore.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "publisher")
 public class Publisher {
-
     @Id
     @Column(name = "publisher_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private String name;
     private String street;
     private String city;
@@ -23,6 +24,13 @@ public class Publisher {
     private String postal_code;
     private String phone;
     private String email;
+
+    // One-to-Many relationship with Book
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "publisher")
+    private List<Book> books;
+
+    public Publisher() {
+    }
 
     public Publisher(String name, String street, String city, String state, String postal_code, String phone, String email) {
         this.name = name;
@@ -34,72 +42,17 @@ public class Publisher {
         this.email = email;
     }
 
-    public Publisher() {
+    // Getters and Setters for books
+    public List<Book> getBooks() {
+        return books;
     }
 
-    public int getId() {
-        return id;
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getpostal_code() {
-        return postal_code;
-    }
-
-    public void setpostal_code(String postal_code) {
-        this.postal_code = postal_code;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    // Other getters and setters
+    // ...
 
     @Override
     public boolean equals(Object o) {
@@ -113,5 +66,4 @@ public class Publisher {
     public int hashCode() {
         return Objects.hash(id, name, street, city, state, postal_code, phone, email);
     }
-
 }

@@ -16,61 +16,94 @@ import java.util.Optional;
 
 @RestController
 public class BookController {
+
     @Autowired
     BookRepository repo;
 
     @Autowired
     AuthorRepository aRepo;
+
     @Autowired
     PublisherRepository pRepo;
 
-//    Create
+    // Create
+    @PostMapping("/books")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Book addBook(@RequestBody Book toAdd) {
+        // Ensure the correct Author and Publisher are set for the book
+        Author author = toAdd.getAuthorId();
+        if (author != null) {
+            Optional<Author> optionalAuthor = aRepo.findById(author.getAuthorid());
+            if (optionalAuthor.isPresent()) {
+                toAdd.setAuthor(optionalAuthor.get());
+            } else {
+                toAdd.setAuthor(null); // Invalid Author, set to null
+            }
+        }
 
-        @PostMapping("/books")
-        @ResponseStatus(HttpStatus.CREATED)
-        public Book addBook(@RequestBody Book toAdd){return repo.save(toAdd);}
+        Publisher publisher = toAdd.getPublisher();
+        if (publisher != null) {
+            Optional<Publisher> optionalPublisher = pRepo.findById(publisher.getId());
+            if (optionalPublisher.isPresent()) {
+                toAdd.setPublisher(optionalPublisher.get());
+            } else {
+                toAdd.setPublisher(null); // Invalid Publisher, set to null
+            }
+        }
 
+        return repo.save(toAdd);
+    }
 
-
-//    read
+    // Read
     @GetMapping("/books")
     @ResponseStatus(HttpStatus.OK)
-    public List<Book> getBooks(){return repo.findAll();}
+    public List<Book> getBooks() {
+        return repo.findAll();
+    }
 
-//    Read by id
+    // Read by id
     @GetMapping("/books/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Book getBooksById(@PathVariable int id){
+    public Book getBooksById(@PathVariable int id) {
         Optional<Book> toReturn = repo.findById(id);
-        if(toReturn.isPresent()){
-            return toReturn.get();
-        } else{
-            return null;
-        }
+        return toReturn.orElse(null);
     }
-//    update
+
+    // Update
     @PutMapping("/books")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateBook(@RequestBody Book book){
+    public void updateBook(@RequestBody Book book) {
+        // Ensure the correct Author and Publisher are set for the book
+        Author author = book.getAuthor();
+        if (author != null) {
+            Optional<Author> optionalAuthor = aRepo.findById(author.getAuthor_id());
+            if (optionalAuthor.isPresent()) {
+                book.setAuthor(optionalAuthor.get());
+            } else {
+                book.setAuthor(null); // Invalid Author, set to null
+            }
+        }
+
+        Publisher publisher = book.getPublisher();
+        if (publisher != null) {
+            Optional<Publisher> optionalPublisher = pRepo.findById(publisher.getId());
+            if (optionalPublisher.isPresent()) {
+                book.setPublisher(optionalPublisher.get());
+            } else {
+                book.setPublisher(null); // Invalid Publisher, set to null
+            }
+        }
+
         repo.save(book);
     }
 
+    // Delete
     @DeleteMapping("/books/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBook(@PathVariable int id){
+    public void deleteBook(@PathVariable int id) {
         repo.deleteById(id);
     }
-//custom query
-    @GetMapping("/books/authorId/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Book> findByAuthorId(@PathVariable int id){
-        List<Book> toReturn = new ArrayList<>();
-        for(Book book : repo.findAll()){
-            if (book.getAuthorId().getAuthor_id() == id){
-                toReturn.add(book);
-            }
-        }
-        return toReturn;
-    }
+
+    // Custom query to find books by author ID
 
 }
