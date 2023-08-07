@@ -23,7 +23,7 @@ class AuthorRepositoryTest {
     }
 
     @Test
-    public void addAuthor() {
+    public void shouldAddAuthor() {
         //Set up
         Author author = new Author();
         author.setFirstName("bob");
@@ -44,7 +44,7 @@ class AuthorRepositoryTest {
         assertEquals(author1.get(), author);
     }
     @Test
-    public void getAllAuthors() {
+    public void shouldGetAllAuthors() {
         //Set up
         Author author = new Author();
         author.setFirstName("bob");
@@ -80,7 +80,7 @@ class AuthorRepositoryTest {
     }
 
     @Test
-    public void updateAuthor() {
+    public void shouldUpdateAuthor() {
         //Arrange...
         //Set up
         Author author = new Author();
@@ -108,7 +108,7 @@ class AuthorRepositoryTest {
     }
 
     @Test
-    public void deleteCustomer() {
+    public void shouldDeleteCustomer() {
         //Arrange...
         //Set up
         Author author = new Author();

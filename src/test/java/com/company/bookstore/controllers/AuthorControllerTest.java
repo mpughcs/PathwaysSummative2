@@ -38,12 +38,14 @@ class AuthorControllerTest {
     Author author1 = new Author("m", "pugh", "main", "longbeach", "CA", "90803", "314-299-3259", "mp@gmail.com");
 
 
+
     //New Author
 
 
     @BeforeEach
     public void setup() throws Exception{
         repo.deleteAll();
+        author1 = new Author("m", "pugh", "main", "longbeach", "CA", "90803", "314-299-3259", "mp@gmail.com");
         repo.save(author1);
 
     }
@@ -89,6 +91,7 @@ class AuthorControllerTest {
     }
 
     @Test
+
     public void ShouldDeleteAuthor() throws Exception {
 
         Author author2 = new Author("a", "b", "main", "longbeach", "CA", "90803", "314-299-3259", "mp@gmail.com");
@@ -97,5 +100,17 @@ class AuthorControllerTest {
         mockMvc.perform(delete("/authors/{id}", author2.getAuthor_id()))
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    void shouldDeleteAuthor() throws Exception {
+        author1.setAuthor_id(1);
+        mockMvc.perform(delete("/authors/{id}", author1.getAuthor_id()))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+    }
+
+
+
 
 }

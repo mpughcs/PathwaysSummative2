@@ -42,6 +42,6 @@ public class AuthorController {
     //Delete
     @DeleteMapping("/authors/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAuthor(@PathVariable Integer id) { repo.deleteById(id);}
+    public void deleteAuthor(@PathVariable int id) { repo.deleteById(id);}
 
 }
