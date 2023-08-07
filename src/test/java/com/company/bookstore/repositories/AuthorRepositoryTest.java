@@ -108,7 +108,7 @@ class AuthorRepositoryTest {
     }
 
     @Test
-    public void shouldDeleteCustomer() {
+    public void shouldDeleteAuthor() {
         //Arrange...
         //Set up
         Author author = new Author();
