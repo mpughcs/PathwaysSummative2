@@ -24,12 +24,14 @@ public class AuthorController {
 
     //Read by ID
     @GetMapping("/authors/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Author getAuthorById(@PathVariable int id) {
         Optional<Author> returnVal = repo.findById(id);
         return returnVal.orElse(null);
     }
     //Read All
     @GetMapping("/authors")
+    @ResponseStatus(HttpStatus.OK)
     public List<Author> getAuthors(){ return repo.findAll();}
 
     //Update

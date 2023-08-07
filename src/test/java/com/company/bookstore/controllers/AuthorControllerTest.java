@@ -34,7 +34,9 @@ class AuthorControllerTest {
 
     @MockBean
     private AuthorRepository repo;
-    Author author1;
+
+    Author author1 = new Author("m", "pugh", "main", "longbeach", "CA", "90803", "314-299-3259", "mp@gmail.com");
+
 
 
     //New Author
@@ -88,14 +90,16 @@ class AuthorControllerTest {
 
     }
 
+
     @Test
     void shouldDeleteAuthor() throws Exception {
         author1.setAuthor_id(1);
-        mockMvc.perform(delete("/authors/{id}", author1.getAuthor_id().intValue()))
+        mockMvc.perform(delete("/authors/{id}", author1.getAuthor_id()))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
     }
+
 
 
 

@@ -69,6 +69,13 @@ class BookControllerTest {
         pubRepository.deleteAll();
     }
 
+    @AfterEach
+    void cleanUp(){
+        repo.deleteAll();
+        authorRepository.deleteAll();
+        pubRepository.deleteAll();
+    }
+
     @Test
     void shouldAddBook() throws Exception {
 //        inputJson = mapper.writeValueAsString(b);

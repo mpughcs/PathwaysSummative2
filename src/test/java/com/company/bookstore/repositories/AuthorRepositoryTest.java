@@ -1,6 +1,7 @@
 package com.company.bookstore.repositories;
 
 import com.company.bookstore.models.Author;
+import com.company.bookstore.models.Publisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,15 @@ class AuthorRepositoryTest {
 
     @Autowired
     AuthorRepository authorRepo;
+    //Author author3 = new Author("rob", "TV", "Ton", "Austin", "TX", "78750", "5555555555", "timmy@gmail.com");
+
+
 
     @BeforeEach
     public void setUp() throws Exception {
         authorRepo.deleteAll();
+        //author3 = authorRepo.save(author3);
+
     }
 
     @Test
