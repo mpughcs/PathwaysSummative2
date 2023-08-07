@@ -7,6 +7,7 @@ import com.company.bookstore.repositories.AuthorRepository;
 import com.company.bookstore.repositories.BookRepository;
 import com.company.bookstore.repositories.PublisherRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -60,6 +61,13 @@ class BookControllerTest {
         inputJson = mapper.writeValueAsString(b);
         b=repo.save(b);
 
+    }
+
+    @AfterEach
+    void cleanUp(){
+        repo.deleteAll();
+        authorRepository.deleteAll();
+        pubRepository.deleteAll();
     }
 
     @Test

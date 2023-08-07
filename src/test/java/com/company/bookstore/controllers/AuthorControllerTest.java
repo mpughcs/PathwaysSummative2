@@ -90,16 +90,6 @@ class AuthorControllerTest {
 
     }
 
-    @Test
-
-    public void ShouldDeleteAuthor() throws Exception {
-
-        Author author2 = new Author("a", "b", "main", "longbeach", "CA", "90803", "314-299-3259", "mp@gmail.com");
-        repo.save(author2);
-
-        mockMvc.perform(delete("/authors/{id}", author2.getAuthor_id()))
-                .andExpect(status().isNoContent());
-    }
 
     @Test
     void shouldDeleteAuthor() throws Exception {
