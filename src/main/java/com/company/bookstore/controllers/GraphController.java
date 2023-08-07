@@ -12,6 +12,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -26,30 +27,27 @@ public class GraphController {
     AuthorRepository authorRepository;
 
 //    find book by id
+//
     @QueryMapping
     public Book findBookById(@Argument int id){
-        Optional<Book> book = bookRepository.findById(id);
-        if(book.isPresent()){
-            Book toReturn= book.get();
-            Author author = authorRepository.findById(toReturn.getAuthorId().getAuthor_id()).get();
-            Publisher publisher=publisherRepository.findById(toReturn.getPublisherId().getId()).get();
-            toReturn.setAuthorId(author);
-            toReturn.setPublisherId(publisher);
-            return toReturn;
+        Optional<Book> toReturn = bookRepository.findById(id);
+        if (toReturn.isPresent()) {
+            return toReturn.get();
+        }else {
+            return null;
         }
-        return null;
+    }
+    @QueryMapping
+    public Author findAuthorById(@Argument int id){
+        Optional<Author> toReturn = authorRepository.findById(id);
+        if (toReturn.isPresent()) {
+            return toReturn.get();
+        }else {
+            return null;
+        }
 
     }
-//    @QueryMapping
-//    public Book findBookById(@Argument int id){
-//        Optional<Book> toReturn = bookRepository.findById(id);
-//        if (toReturn.isPresent()) {
-//            return toReturn.get();
-//        }else {
-//            return null;
-//        }
-//
-//    }
+
 
     // find publisher by id
     @QueryMapping
@@ -62,17 +60,27 @@ public class GraphController {
         }
     }
     @SchemaMapping
-    public Author author (Book book) {
-        Optional<Author> returnVal = authorRepository.findById(book.getId());
+    public Author author(Book book) {
+        Optional<Author> returnVal = authorRepository.findById(book.getAuthorId().getAuthor_id());
         if (returnVal.isPresent()) {
             return returnVal.get();
-        }else {
+        } else {
             return null;
-
         }
     }
-
-
+    @SchemaMapping
+    public Publisher publisher(Book book) {
+        Optional<Publisher> returnVal = publisherRepository.findById(book.getPublisherId().getId());
+        if (returnVal.isPresent()) {
+            return returnVal.get();
+        } else {
+            return null;
+        }
+    }
+    @SchemaMapping
+    public List<Book> books(Author author) {
+        return bookRepository.findByAuthorId(author.getAuthor_id().intValue());
+    }
 
 
 
